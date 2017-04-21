@@ -1,4 +1,4 @@
-FROM quay.io/aptible/ubuntu:14.04
+FROM quay.io/aptible/ubuntu:16.04
 
 # Set locales (for PostgreSQL)
 RUN apt-get update && apt-get install -y language-pack-en
@@ -8,11 +8,14 @@ ENV LC_ALL en_US.UTF-8
 RUN locale-gen en_US.UTF-8
 
 # Python/pip
-RUN apt-get install -y build-essential python-dev python-pip
+RUN apt-get install -y build-essential python-dev python-pip && pip install --upgrade pip
 
 # PostgreSQL client libraries
 RUN ln -s -f /bin/true /usr/bin/chfn
 RUN apt-get install -y postgresql postgresql-contrib libpq-dev
+
+# cmake, clang, jpeg (other sentry deps)
+RUN apt-get install -y cmake clang libjpeg-dev
 
 # Add the source code
 RUN mkdir -p /app
